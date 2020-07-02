@@ -10,7 +10,8 @@
       var myDate = new Date();
       var weekTable = new Array("日","月","火","水","木","金","土");
       var monthTable = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
-      var yearTable = myDate.getFullYear();
+      var year = myDate.getFullYear();
+      if ((year%4)==0 && (year%100)!==0) || 
       console.log(myDate);
       console.log(weekTable);
       console.log(monthTable);

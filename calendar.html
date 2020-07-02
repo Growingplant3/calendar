@@ -7,15 +7,74 @@
   </head>
   <body>
     <script>
-      var myDate = new Date();
-      var weekTable = new Array("日","月","火","水","木","金","土");
-      var monthTable = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
-      var year = myDate.getFullYear();
-      if ((year%4)==0 && (year%100)!==0) || 
-      console.log(myDate);
-      console.log(weekTable);
-      console.log(monthTable);
-      console.log(yearTable);
+      var my_date = new Date();
+      var week_table = new Array("日","月","火","水","木","金","土");
+      var month_table = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+      var year = my_date.getFullYear();
+      if ((( year % 4 ) == 0 && ( year % 100 ) !== 0 ) || ( year % 400 ) == 0 ) {
+        month_table[1] = 29;
+      }
+      // 閏年のルール
+      // 西暦が4で割り切れる年は閏年である。year % 4 == 0 が true
+      // ただし、100で割り切れる年は閏年ではない。year % 100 == 0 が false
+      // ただし、400で割り切れる年は閏年である。year % 400 == 0 が true
+      var month = my_date.getMonth() + 1;
+      var today = my_date.getDate();
+      my_date.setDate(1); //　月初を1日に設定
+      var week_day = my_date.getDay();
+      // 0:日曜日,1:月曜日,2:火曜日,3:水曜日,4:木曜日,5:金曜日,6:土曜日,7:日曜日 week_table[week_day];が使える
+      var calendar_line = Math.ceil(( week_day + month_table[week_day] ) / 7 );
+      // Math.ceil:引数以上の最小の整数を返す つまりカレンダーの行数を定義する
+      var table = new Array( 7 * calendar_line );
+      // カレンダーの枠を定義する,空の配列
+      for ( i=0; i<7*calendar_line; i++ ) { table[i] = " " }
+      // カレンダーの日付のないところには半角スペースを配置
+      for ( i=0; i<month_table[month]; i++ ) { table[i+week_day] = i+1 }
+      // カレンダーの日付のあるところには日付を配置
+      // console.log(my_date);
+      // console.log(week_table);
+      // console.log(month_table);
+      // console.log(year);
+      // console.log(month);
+      // console.log(today);
+      // console.log(week_day);
+      // console.log(week_table[week_day]);
+      // console.log(calendar_line);
+      // console.log(table);
+
+      document.write("<table border='3'>");
+      document.write("<tr><td colspan='7' bgcolor='#7fffd4'>");
+      document.write("<strong>",year,"年",month,"月カレンダー</strong>");
+      document.write("</td></tr>")
+      document.write("<tr>");
+      for ( i=0; i<7; i++ ) {
+        document.write("<td align='center' ");
+        if ( i==0 ) {
+          document.write("bgcolor='#fa8072'>"); // 日曜日なら薄めの赤
+        } else if ( i==6 ) {
+          document.write("bgcolor='#0066ff'>"); // 土曜日なら薄めの青
+        } else {
+          document.write("bgcolor='#ffebcd'>"); // その他なら肌色
+        }
+        document.write("<strong>",week_table[i],"<strong>");
+        document.write("</td>");
+      }
+      document.write("</td>");
+
+      for ( i=0; i<calendar_line; i++ ) {
+        document.write("<tr>");
+        for( j=0; j<7; j++ ) {
+          document.write("<td align='center' ");
+          var write_date = table[j+(i*7)];
+          if ( write_date == today ) document.write("bgcolor='#00ffff'>");
+          else if ( j == 0 ) document.write("bgcolor='ffb6c1'>");
+          else if ( j == 6 ) document.write("bgcolor='00ccff'>");
+          else document.write("bgcolor='ffebcd'>");
+          document.write("<strong>",write_date,"</strong>")
+          document.write("</td>");          
+        }
+      }
+      document.write("</table>");
     </script>
   </body>
 </html>
